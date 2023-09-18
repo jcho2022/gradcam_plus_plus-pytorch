@@ -40,7 +40,6 @@ class GradCAM(object):
         self.gradients = dict()
         self.activations = dict()
         def backward_hook(module, grad_input, grad_output):
-            import ipdb; ipdb.set_trace()
             self.gradients['value'] = grad_output[0]
             print("backward_hook called")  # 디버깅 출력 추가
             return None
@@ -103,6 +102,7 @@ class GradCAM(object):
             score = logit[:, class_idx].squeeze()
 
         self.model_arch.zero_grad()
+        import ipdb; ipdb.set_trace()
         score.backward(retain_graph=retain_graph)
         gradients = self.gradients['value']
         activations = self.activations['value']
