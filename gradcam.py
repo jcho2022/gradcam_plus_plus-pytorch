@@ -40,6 +40,7 @@ class GradCAM(object):
         self.gradients = dict()
         self.activations = dict()
         def backward_hook(module, grad_input, grad_output):
+            import ipdb; ipdb.set_trace()
             self.gradients['value'] = grad_output[0]
             print("backward_hook called")  # 디버깅 출력 추가
             return None
@@ -60,7 +61,6 @@ class GradCAM(object):
         elif 'yolov8' in self.model_type.lower():
             target_layer = find_yolov8_layer(self.model_arch, layer_name)
 
-        import ipdb; ipdb.set_trace()
         target_layer.register_forward_hook(forward_hook)
         target_layer.register_backward_hook(backward_hook)
 
