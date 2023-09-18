@@ -171,7 +171,8 @@ class GradCAMpp(GradCAM):
             score = logit[:, logit.max(1)[-1]].squeeze()
         else:
             score = logit[:, class_idx].squeeze() 
-            
+        score.requires_grad_(True)
+        
         self.model_arch.zero_grad()
         score.backward(retain_graph=retain_graph)
         gradients = self.gradients['value'] # dS/dA
