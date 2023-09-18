@@ -87,15 +87,16 @@ class GradCAM(object):
         """
         b, c, h, w = input.size()
 
-        if self.model_type == 'yolov8':
-            results = self.model_arch(input)
-            num_classes = results[0].probs.data.size()[0]
-            logit = torch.empty(0, num_classes, requires_grad=True).cuda()
-            for res in results:
-                _logit = res.probs.data.unsqueeze(0)
-                logit = torch.cat((logit, _logit), dim=0)
-        else:
-            logit = self.model_arch(input)
+        # if self.model_type == 'yolov8':
+        #     results = self.model_arch(input)
+        #     num_classes = results[0].probs.data.size()[0]
+        #     logit = torch.empty(0, num_classes, requires_grad=True).cuda()
+        #     for res in results:
+        #         _logit = res.probs.data.unsqueeze(0)
+        #         logit = torch.cat((logit, _logit), dim=0)
+        # else:
+        #     logit = self.model_arch(input)
+        logit = self.model_arch(input)
         if class_idx is None:
             score = logit[:, logit.max(1)[-1]].squeeze()
         else:
