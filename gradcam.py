@@ -33,9 +33,9 @@ class GradCAM(object):
         verbose (bool): whether to print output size of the saliency map givien 'layer_name' and 'input_size' in model_dict.
     """
     def __init__(self, model_dict, verbose=False):
-        model_type = model_dict['type']
         layer_name = model_dict['layer_name']
         self.model_arch = model_dict['arch']
+        self.model_type = model_dict['type']
 
         self.gradients = dict()
         self.activations = dict()
@@ -46,17 +46,17 @@ class GradCAM(object):
             self.activations['value'] = output
             return None
 
-        if 'vgg' in model_type.lower():
+        if 'vgg' in self.model_type.lower():
             target_layer = find_vgg_layer(self.model_arch, layer_name)
-        elif 'resnet' in model_type.lower():
+        elif 'resnet' in self.model_type.lower():
             target_layer = find_resnet_layer(self.model_arch, layer_name)
-        elif 'densenet' in model_type.lower():
+        elif 'densenet' in self.model_type.lower():
             target_layer = find_densenet_layer(self.model_arch, layer_name)
-        elif 'alexnet' in model_type.lower():
+        elif 'alexnet' in self.model_type.lower():
             target_layer = find_alexnet_layer(self.model_arch, layer_name)
-        elif 'squeezenet' in model_type.lower():
+        elif 'squeezenet' in self.model_type.lower():
             target_layer = find_squeezenet_layer(self.model_arch, layer_name)
-        elif 'yolov8' in model_type.lower():
+        elif 'yolov8' in self.model_type.lower():
             target_layer = find_yolov8_layer(self.model_arch, layer_name)
 
         target_layer.register_forward_hook(forward_hook)
