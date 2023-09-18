@@ -1,7 +1,9 @@
 import torch
 import torch.nn.functional as F
 
-from utils import find_alexnet_layer, find_vgg_layer, find_resnet_layer, find_densenet_layer, find_squeezenet_layer
+from utils import find_alexnet_layer, find_vgg_layer,\
+                  find_resnet_layer, find_densenet_layer,\
+                  find_squeezenet_layer, find_yolov8_layer
 
 
 class GradCAM(object):
@@ -54,6 +56,8 @@ class GradCAM(object):
             target_layer = find_alexnet_layer(self.model_arch, layer_name)
         elif 'squeezenet' in model_type.lower():
             target_layer = find_squeezenet_layer(self.model_arch, layer_name)
+        elif 'yolov8' in model_type.lower():
+            target_layer = find_yolov8_layer(self.model_arch, layer_name)
 
         target_layer.register_forward_hook(forward_hook)
         target_layer.register_backward_hook(backward_hook)

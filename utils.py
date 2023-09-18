@@ -183,6 +183,30 @@ def find_squeezenet_layer(arch, target_layer_name):
 
     return target_layer
 
+def find_yolov8_layer(arch, target_layer_name):
+    """Find yolov8 layer to calculate GradCAM
+
+    Args:
+        arch: yolov8-cls model instance
+        target_layer_name (str): the name of layer with its hierarchical info.
+            target_layer_name = 'model.model.{number}'
+                {number}: 0, 1, 2, ... , or 9 (9 is SPPF layer.)
+
+    Return:
+        target_layer: found layer. this layer will be hooked to get
+                      forward/backward pass information.
+    """
+
+    hierarchy = target_layer_name.split(".")
+    target_layer = arch._modules[hierarchy[0]]
+
+    if len(hierarchy) >= 2:
+        target_layer = target_layer._modules[hierarchy[1]]
+
+    if len(hierarchy) >= 3:
+        target_layer = target_layer._modules[hierarchy[2]]
+
+    return target_layer
 
 def denormalize(tensor, mean, std):
     if not tensor.ndimension() == 4:
