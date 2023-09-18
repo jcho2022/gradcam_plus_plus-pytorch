@@ -60,6 +60,7 @@ class GradCAM(object):
         elif 'yolov8' in self.model_type.lower():
             target_layer = find_yolov8_layer(self.model_arch, layer_name)
 
+        import ipdb; ipdb.set_trace()
         target_layer.register_forward_hook(forward_hook)
         target_layer.register_backward_hook(backward_hook)
 
@@ -101,7 +102,6 @@ class GradCAM(object):
         else:
             score = logit[:, class_idx].squeeze()
 
-        import ipdb; ipdb.set_trace()
         self.model_arch.zero_grad()
         score.backward(retain_graph=retain_graph)
         gradients = self.gradients['value']
