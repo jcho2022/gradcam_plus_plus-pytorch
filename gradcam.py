@@ -89,7 +89,7 @@ class GradCAM(object):
         if self.model_type == 'yolov8':
             results = self.model_arch(input)
             num_classes = results[0].probs.data.size()[0]
-            logit = torch.empty(0, num_classes).cuda()
+            logit = torch.empty(0, num_classes, requires_grad=True).cuda()
             for res in results:
                 _logit = res.probs.data.unsqueeze(0)
                 logit = torch.cat((logit, _logit), dim=0)
