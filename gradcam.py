@@ -100,6 +100,7 @@ class GradCAM(object):
         else:
             score = logit[:, class_idx].squeeze()
 
+        import ipdb; ipdb.set_trace()
         self.model_arch.zero_grad()
         score.backward(retain_graph=retain_graph)
         gradients = self.gradients['value']
