@@ -41,6 +41,7 @@ class GradCAM(object):
         self.activations = dict()
         def backward_hook(module, grad_input, grad_output):
             self.gradients['value'] = grad_output[0]
+            print("backward_hook called")  # 디버깅 출력 추가
             return None
         def forward_hook(module, input, output):
             self.activations['value'] = output
